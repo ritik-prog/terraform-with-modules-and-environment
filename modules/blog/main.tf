@@ -21,6 +21,7 @@ resource "aws_vpc" "dev" {
   }
 }
 
+
 # module "blog_vpc" {
 #   source = "terraform-aws-modules/vpc/aws"
 
