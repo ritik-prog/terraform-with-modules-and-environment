@@ -43,9 +43,21 @@ jobs:
             echo "Invalid environment specified."
             exit 1
           fi
-          
+
       - name: Save Terraform state
+        run: |
+          if [ -f terraform/terraform.tfstate ]; then
+            echo "Terraform state file found. Uploading to artifacts."
+            tar -czvf terraform-state.tar.gz terraform/terraform.tfstate
+            mv terraform-state.tar.gz ./artifacts/
+          else
+            echo "Terraform state file not found. Skipping artifact upload."
+          fi
+        working-directory: ./${{ secrets.ENVIRONMENT }}
+
+      - name: Upload artifacts
+        if: ${{ success() }}
         uses: actions/upload-artifact@v2
         with:
           name: terraform-state
-          path: terraform/terraform.tfstate
+          path: artifacts/terraform-state.tar.gz
