@@ -23,6 +23,7 @@ jobs:
 
       - name: Initialize Terraform
         run: terraform init
+        working-directory: ./${{ secrets.ENVIRONMENT }}
 
       - name: Apply or Destroy Terraform
         run: |
