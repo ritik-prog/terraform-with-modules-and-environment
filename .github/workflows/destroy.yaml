@@ -25,17 +25,17 @@ jobs:
         run: terraform init
         working-directory: ./${{ secrets.ENVIRONMENT }}
 
-      - name: Apply or Destroy Terraform
+      - name: Destroy Terraform
         run: |
           if [ "${{ secrets.ENVIRONMENT }}" = "dev" ]; then
             cd dev
-            terraform apply -auto-approve
+            terraform destroy -auto-approve
           elif [ "${{ secrets.ENVIRONMENT }}" = "prod" ]; then
             cd prod
-            terraform apply -auto-approve
+            terraform destroy -auto-approve
           elif [ "${{ secrets.ENVIRONMENT }}" = "qa" ]; then
             cd qa
-            terraform apply -auto-approve
+            terraform destroy -auto-approve
           else
             echo "Invalid environment specified."
             exit 1
