@@ -49,7 +49,7 @@ jobs:
           if [ -f terraform/terraform.tfstate ]; then
             echo "Terraform state file found. Uploading to artifacts."
             tar -czvf terraform-state.tar.gz terraform/terraform.tfstate
-            mv terraform-state.tar.gz ./artifacts/
+            mv terraform-state.tfstate ./artifacts/
           else
             echo "Terraform state file not found. Skipping artifact upload."
           fi
@@ -60,4 +60,4 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: terraform-state
-          path: artifacts/terraform-state.tar.gz
+          path: artifacts/terraform-state.tfstate
