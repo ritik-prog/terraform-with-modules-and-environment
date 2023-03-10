@@ -43,3 +43,9 @@ jobs:
             echo "Invalid environment specified."
             exit 1
           fi
+          
+      - name: Save Terraform state
+        uses: actions/upload-artifact@v2
+        with:
+          name: terraform-state
+          path: terraform/terraform.tfstate

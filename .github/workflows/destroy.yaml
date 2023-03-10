@@ -1,4 +1,4 @@
-name: Terraform Destroy
+name: Destroy Terraform Resources
 
 on:
   workflow_dispatch:
@@ -8,24 +8,21 @@ env:
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
 jobs:
-  terraform_apply_destroy:
+  destroy_terraform_resources:
     runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
     steps:
-      - name: Checkout Terraform code
-        uses: actions/checkout@v2
-
-      - name: Configure AWS CLI
-        uses: aws-actions/configure-aws-credentials@v1
+      - name: Download Terraform State
+        uses: actions/download-artifact@v2
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
+          name: terraform-state
+          path: terraform
 
       - name: Initialize Terraform
         run: terraform init
-        working-directory: ./${{ secrets.ENVIRONMENT }}
+        working-directory: ./terraform
 
-      - name: Destroy Terraform
+      - name: Destroy Terraform Resources
         run: |
           if [ "${{ secrets.ENVIRONMENT }}" = "dev" ]; then
             cd dev
@@ -40,3 +37,4 @@ jobs:
             echo "Invalid environment specified."
             exit 1
           fi
+        working-directory: ./terraform
