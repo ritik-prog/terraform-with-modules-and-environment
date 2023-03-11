@@ -10,7 +10,6 @@ env:
 jobs:
   destroy_terraform_resources:
     runs-on: ubuntu-latest
-    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
     steps:
       - name: Download Terraform State
         uses: actions/download-artifact@v2
